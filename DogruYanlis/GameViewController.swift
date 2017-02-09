@@ -18,10 +18,10 @@ class GameViewController: UIViewController, DataEnteredDelegate, ScoreboardDeleg
     lazy var ref: FIRDatabaseReference = FIRDatabase.database().reference()
     var usersRef: FIRDatabaseReference!
     
+    var claimListenerHandle: UInt!
+    
     var myGroup = dispatch_group_create()
     
-    //Sound Related
-    //var sarilipSound = NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("sarilip", ofType: "m4a")!)
     var audioPlayer = AVAudioPlayer()
     
     override func viewDidLoad() {
@@ -34,7 +34,26 @@ class GameViewController: UIViewController, DataEnteredDelegate, ScoreboardDeleg
         
         usersRef = ref.child("sessions/\(data.gameID)/users")
         
-        sessionInfo.text = "Session Info\nLogged in to game: \(data.gameID) \nWith user name: \(data.userName)\nPLayers in game: \(data.players.count)"
+        let formattedString = NSMutableAttributedString()
+        
+        sessionInfo.attributedText = formattedString.bold("Session Info").normal("\nLogged in to game: ").bold(data.gameID).normal("\nWith user name: ").bold(data.userName).normal("\nPlayers in game: ").bold(String(data.players.count))
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        claimListenerHandle = ref.child("sessions/\(data.gameID)/metadata/claim count").observeEventType(.Value, withBlock: {
+            (snapshot: FIRDataSnapshot) in
+            if let count = snapshot.value as? Int {
+                self.remainingClaimValue = count
+            }
+        })
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        ref.removeObserverWithHandle(claimListenerHandle)
     }
 
     var claimOwnerString: String?
@@ -127,7 +146,8 @@ class GameViewController: UIViewController, DataEnteredDelegate, ScoreboardDeleg
             }
         })
         
-        remainingClaimValue = data.claimCount
+        //Removed this.
+        //remainingClaimValue = data.claimCount
     }
     
     func increaseUserScore(user: String, byScore score: Int){
