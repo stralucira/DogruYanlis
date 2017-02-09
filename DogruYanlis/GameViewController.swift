@@ -18,6 +18,8 @@ class GameViewController: UIViewController, DataEnteredDelegate, ScoreboardDeleg
     lazy var ref: FIRDatabaseReference = FIRDatabase.database().reference()
     var usersRef: FIRDatabaseReference!
     
+    var myGroup = dispatch_group_create()
+    
     //Sound Related
     //var sarilipSound = NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("sarilip", ofType: "m4a")!)
     var audioPlayer = AVAudioPlayer()
@@ -31,6 +33,8 @@ class GameViewController: UIViewController, DataEnteredDelegate, ScoreboardDeleg
         anilButton.enabled = false
         
         usersRef = ref.child("sessions/\(data.gameID)/users")
+        
+        sessionInfo.text = "Session Info\nLogged in to game: \(data.gameID) \nWith user name: \(data.userName)\nPLayers in game: \(data.players.count)"
     }
 
     var claimOwnerString: String?
@@ -42,10 +46,11 @@ class GameViewController: UIViewController, DataEnteredDelegate, ScoreboardDeleg
     private var remainingClaimValue: Int {
         
         get{
-            return Int(remainingClaims.text!)!
+            let remainingClaimValueString = remainingClaims.text!.componentsSeparatedByString(" ")
+            return Int(remainingClaimValueString[0])!
         }
         set{
-            remainingClaims.text = String(newValue)
+            remainingClaims.text = String(newValue) + " Claims Left"
         }
     }
 
@@ -54,6 +59,8 @@ class GameViewController: UIViewController, DataEnteredDelegate, ScoreboardDeleg
     @IBOutlet weak var claimOwner: UILabel!
     @IBOutlet weak var claimLabel: UILabel!
     @IBOutlet weak var showClaimButton: UIButton!
+    
+    @IBOutlet weak var sessionInfo: UILabel!
     
     @IBOutlet weak var newGameButton: UIBarButtonItem!
     
@@ -92,6 +99,34 @@ class GameViewController: UIViewController, DataEnteredDelegate, ScoreboardDeleg
     func userDidEnterInformation(claim: Claim) {
         data.addClaim(claim.name, sentence: claim.sentence, truthfulness: claim.truthfulness)
         data.addPlayer(claim.name)
+        
+        let claimToBePushed = [
+            "user name"     : claim.name,
+            "sentence"      : claim.sentence,
+            "truthfulness"  : claim.truthfulness
+        ]
+        var index : Int = 0
+        let claimCountRef = ref.child("sessions/\(self.data.gameID)/metadata/claim count")
+        
+        claimCountRef.observeSingleEventOfType(.Value, withBlock: {
+            (snapshot) in
+            index = snapshot.value! as! Int
+            
+            let claimUpdate = [
+                "sessions/\(self.data.gameID)/claims/\(index)" : claimToBePushed
+            ]
+            self.ref.updateChildValues(claimUpdate)
+            
+            claimCountRef.runTransactionBlock { (currentData: FIRMutableData) -> FIRTransactionResult in
+                if let count = currentData.value as? Int {
+                    currentData.value = count + 1
+                    return FIRTransactionResult.successWithValue(currentData)
+                } else {
+                    return FIRTransactionResult.successWithValue(currentData)
+                }
+            }
+        })
+        
         remainingClaimValue = data.claimCount
     }
     

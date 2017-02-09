@@ -208,9 +208,10 @@ class SignInViewController: UIViewController, UITextFieldDelegate {
             "sessions/\(self.gameName)/users/\(self.userName)" : user
         ]
         let metadata = [
-            "initiator" : self.userName,
-            "user count" : 1,
-            "locked" : false
+            "initiator"     : self.userName,
+            "user count"    : 1,
+            "locked"        : false,
+            "claim count"   : 0
         ]
         let metadataUpdate = [
             "sessions/\(self.gameName)/metadata" : metadata,
