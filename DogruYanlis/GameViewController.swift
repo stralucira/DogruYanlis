@@ -39,7 +39,14 @@ class GameViewController: UIViewController, DataEnteredDelegate, ScoreboardDeleg
         sessionInfo.attributedText = formattedString.bold("Session Info").normal("\nLogged in to game: ").bold(data.gameID).normal("\nWith user name: ").bold(data.userName).normal("\nPlayers in game: ").bold(String(data.players.count))
         
         gameNameLabel.text = " " + data.gameID
-        userNameLabel.text = data.userName
+        
+        if data.isAdmin() {
+            userNameLabel.text = data.userName + " (Admin)"
+        } else {
+            userNameLabel.text = data.userName
+            showClaimButton.hidden = true
+            anilButton.hidden = true
+        }
     }
     
     override func viewWillAppear(animated: Bool) {

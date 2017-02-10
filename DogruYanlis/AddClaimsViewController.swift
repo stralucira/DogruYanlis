@@ -100,10 +100,7 @@ class AddClaimsViewController: UIViewController {
         } else {
             sentenceTwo.layer.borderColor = greenColor
         }
-        
     }
-    
-    
     @IBOutlet weak var sentenceThree: UITextField!
     
     @IBAction func switchThree(sender: SevenSwitch) {
@@ -116,60 +113,58 @@ class AddClaimsViewController: UIViewController {
         
     }
     
-    
     @IBAction func save(sender: UIButton) {
-    
-        if (playerName.text != "") && ((sentenceOne.text !=  "") || (sentenceTwo.text !=  "") || (sentenceThree.text !=  "")){
+        if textFieldsValid() {
+            if (playerName.text != "") && ((sentenceOne.text !=  "") || (sentenceTwo.text !=  "") || (sentenceThree.text !=  "")){
             
-            if (sentenceOne.text != "") {
-                delegate?.userDidEnterInformation(Claim(name: playerName.text!, sentence: sentenceOne.text!, truthfulness: mySwitch.isOn()))
-                successfulClaims += 1
-            }
+                if (sentenceOne.text != "") {
+                    delegate?.userDidEnterInformation(Claim(name: playerName.text!, sentence: sentenceOne.text!, truthfulness: mySwitch.isOn()))
+                    successfulClaims += 1
+                }
         
-            if (sentenceTwo.text != "") {
-                delegate?.userDidEnterInformation(Claim(name: playerName.text!, sentence: sentenceTwo.text!, truthfulness: mySwitch2.isOn()))
-                successfulClaims += 1
-            }
+                if (sentenceTwo.text != "") {
+                    delegate?.userDidEnterInformation(Claim(name: playerName.text!, sentence: sentenceTwo.text!, truthfulness: mySwitch2.isOn()))
+                    successfulClaims += 1
+                }
         
-            if (sentenceThree.text != "") {
-                delegate?.userDidEnterInformation(Claim(name: playerName.text!, sentence: sentenceThree.text!, truthfulness: mySwitch3.isOn()))
-                successfulClaims += 1
-            }
+                if (sentenceThree.text != "") {
+                    delegate?.userDidEnterInformation(Claim(name: playerName.text!, sentence: sentenceThree.text!, truthfulness: mySwitch3.isOn()))
+                    successfulClaims += 1
+                }
             
-            if (successfulClaims == 1) {
-                successMessage = "Your 1 claim has been submitted."
-                titleMessage = "Gratz \(playerName.text!)!"
+                if (successfulClaims == 1) {
+                    successMessage = "Your 1 claim has been submitted."
+                    titleMessage = "Gratz \(playerName.text!)!"
                 
-            } else {
-                successMessage = "Your \(successfulClaims) claims has been submitted."
-                titleMessage = "Gratz \(playerName.text!)!"
-            }
-            
-            let successAlertController = UIAlertController(
-                title: titleMessage,
-                message: successMessage,
-                preferredStyle: UIAlertControllerStyle.Alert
-            )
-            
-            successAlertController.addAction(
-                UIAlertAction(
-                    title: "Okay",
-                    style: UIAlertActionStyle.Default,
-                    handler: { (successAlertController) in
-                        _ = self.navigationController?.popViewControllerAnimated(true)
-                    }
+                } else {
+                    successMessage = "Your \(successfulClaims) claims has been submitted."
+                    titleMessage = "Gratz \(playerName.text!)!"
+                }
+                
+                let successAlertController = UIAlertController(
+                    title: titleMessage,
+                    message: successMessage,
+                    preferredStyle: UIAlertControllerStyle.Alert
                 )
-            )
-        
-            self.presentViewController(successAlertController, animated: true, completion: nil)
-        
-            clear()
-            
-        } else if (playerName.text == "") {
-            
+                successAlertController.addAction(
+                    UIAlertAction(
+                        title: "Okay",
+                        style: UIAlertActionStyle.Default,
+                        handler: { (successAlertController) in
+                            _ = self.navigationController?.popViewControllerAnimated(true)
+                        }
+                    )
+                )
+                self.presentViewController(successAlertController, animated: true, completion: nil)
+                clear()
+            }
+        }
+    }
+    
+    func textFieldsValid() -> Bool {
+        if (playerName.text == "") {
             let nameNotEnteredAlertController = UIAlertController(title: "", message:
                 "Please type your name before submitting!", preferredStyle: UIAlertControllerStyle.Alert)
-            
             nameNotEnteredAlertController.addAction(
                 UIAlertAction(
                     title: "Okay",
@@ -177,8 +172,8 @@ class AddClaimsViewController: UIViewController {
                     handler: nil
                 )
             )
-            
             self.presentViewController(nameNotEnteredAlertController, animated: true, completion: nil)
+            return false
             
         } else if (((sentenceOne.text == "") && (sentenceTwo.text == "")) && (sentenceThree.text == "")) {
             
@@ -187,13 +182,14 @@ class AddClaimsViewController: UIViewController {
             claimNotEnteredAlertController.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default,handler: nil))
             
             self.presentViewController(claimNotEnteredAlertController, animated: true, completion: nil)
-            
+            return false
+        } else {
+            return true
         }
-        
     }
+
     
     func switchHandler(mySwitch: SevenSwitch) -> Void {
-        
         mySwitch.offLabel.text = "FALSE"
         mySwitch.offLabel.textColor = UIColor.whiteColor()
         mySwitch.onLabel.textColor = UIColor.whiteColor()
@@ -203,8 +199,6 @@ class AddClaimsViewController: UIViewController {
         mySwitch.thumbImage = UIImage(named: "iconsnake")
         mySwitch.on = true
         mySwitch.onLabel.text = "TRUE"
-
-        
     }
     
     //Clear function

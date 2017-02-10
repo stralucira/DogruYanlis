@@ -208,7 +208,7 @@ class SignInViewController: UIViewController, UITextFieldDelegate {
             "sessions/\(self.gameName)/users/\(self.userName)" : user
         ]
         let metadata = [
-            "initiator"     : self.userName,
+            "admin"         : self.userName,
             "user count"    : 1,
             "locked"        : false,
             "claim count"   : 0
@@ -225,6 +225,7 @@ class SignInViewController: UIViewController, UITextFieldDelegate {
             
             destinationViewController.data.gameID = gameName
             destinationViewController.data.userName = userName
+            destinationViewController.data.admin = userName
             destinationViewController.data.addPlayer(userName)
             
         } else if (segue.identifier == "joinGame") {

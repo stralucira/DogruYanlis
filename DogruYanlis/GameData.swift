@@ -18,7 +18,7 @@ struct Claim {
 class GameData {
     
     var gameID = ""
-    
+    var admin = ""
     var userName = ""
     
     var claimCount = 0
@@ -84,6 +84,14 @@ class GameData {
         scores = [:]
         claimList = []
         claimCount = 0
+    }
+    
+    func isAdmin() -> Bool {
+        if (admin == userName) {
+            return true
+        } else {
+            return false
+        }
     }
     
     
