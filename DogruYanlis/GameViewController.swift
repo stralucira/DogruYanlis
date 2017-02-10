@@ -37,6 +37,9 @@ class GameViewController: UIViewController, DataEnteredDelegate, ScoreboardDeleg
         let formattedString = NSMutableAttributedString()
         
         sessionInfo.attributedText = formattedString.bold("Session Info").normal("\nLogged in to game: ").bold(data.gameID).normal("\nWith user name: ").bold(data.userName).normal("\nPlayers in game: ").bold(String(data.players.count))
+        
+        gameNameLabel.text = " " + data.gameID
+        userNameLabel.text = data.userName
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -81,7 +84,8 @@ class GameViewController: UIViewController, DataEnteredDelegate, ScoreboardDeleg
     
     @IBOutlet weak var sessionInfo: UILabel!
     
-    @IBOutlet weak var newGameButton: UIBarButtonItem!
+    @IBOutlet weak var gameNameLabel: UILabel!
+    @IBOutlet weak var userNameLabel: UILabel!
     
     @IBAction func newGame(sender: UIBarButtonItem) {
         
@@ -112,6 +116,7 @@ class GameViewController: UIViewController, DataEnteredDelegate, ScoreboardDeleg
     }
 
     @IBAction func showLeaderboardButton(sender: UIBarButtonItem) {
+    
     }
     
     //Used for DataEnteredDelegate

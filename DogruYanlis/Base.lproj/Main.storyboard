@@ -71,8 +71,39 @@
                                     <constraint firstAttribute="height" constant="79" id="rpC-qh-VHb"/>
                                 </constraints>
                             </stackView>
+                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hkP-Kk-s8d" userLabel="Session Info">
+                                <rect key="frame" x="16" y="72" width="343" height="22"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="game" translatesAutoresizingMaskIntoConstraints="NO" id="vOQ-zY-q0A">
+                                        <rect key="frame" x="0.0" y="0.0" width="22" height="22"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="22" id="HrE-lM-AdQ"/>
+                                            <constraint firstAttribute="height" constant="22" id="kWg-j1-me1"/>
+                                        </constraints>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text=" Game Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WSk-KT-RCZ">
+                                        <rect key="frame" x="22" y="0.0" width="213" height="22"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                        <color key="textColor" white="0.25" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="user" translatesAutoresizingMaskIntoConstraints="NO" id="7Cc-Ti-Svb">
+                                        <rect key="frame" x="235" y="0.0" width="22" height="22"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="22" id="Vgs-28-9dG"/>
+                                            <constraint firstAttribute="height" constant="22" id="kki-bl-T6E"/>
+                                        </constraints>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="User Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Q7H-FE-kSR">
+                                        <rect key="frame" x="257" y="0.0" width="86" height="22"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" white="0.25" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="bottom" translatesAutoresizingMaskIntoConstraints="NO" id="Ng9-Is-fjA" userLabel="Claim Stack">
-                                <rect key="frame" x="16" y="64" width="343" height="191"/>
+                                <rect key="frame" x="16" y="94" width="343" height="191"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Welcome to Sarılıp Yılana" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" minimumFontSize="14" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Hl7-oU-gyD">
                                         <rect key="frame" x="0.0" y="0.0" width="343" height="150"/>
@@ -110,19 +141,23 @@
                         <constraints>
                             <constraint firstAttribute="trailingMargin" secondItem="zzs-pA-UsR" secondAttribute="trailing" id="1CS-rf-Hgo"/>
                             <constraint firstItem="rsE-cq-NnM" firstAttribute="leading" secondItem="7Hf-x4-csP" secondAttribute="leadingMargin" constant="-16" id="1Zr-XB-h4U"/>
+                            <constraint firstItem="Ng9-Is-fjA" firstAttribute="top" secondItem="hkP-Kk-s8d" secondAttribute="bottom" id="2bZ-yF-66A"/>
                             <constraint firstItem="zzs-pA-UsR" firstAttribute="leading" secondItem="7Hf-x4-csP" secondAttribute="leadingMargin" id="5is-xX-nit"/>
                             <constraint firstItem="gHe-6c-9pL" firstAttribute="top" secondItem="zzs-pA-UsR" secondAttribute="bottom" id="DrK-wY-2il"/>
                             <constraint firstAttribute="trailingMargin" secondItem="rsE-cq-NnM" secondAttribute="trailing" constant="-16" id="HAg-QV-ypL"/>
                             <constraint firstAttribute="trailingMargin" secondItem="Ng9-Is-fjA" secondAttribute="trailing" id="HMi-mu-GOZ"/>
+                            <constraint firstItem="hkP-Kk-s8d" firstAttribute="leading" secondItem="7Hf-x4-csP" secondAttribute="leadingMargin" id="KR5-yL-Jty"/>
                             <constraint firstItem="rsE-cq-NnM" firstAttribute="centerY" secondItem="7Hf-x4-csP" secondAttribute="centerY" id="SjM-pd-saG"/>
                             <constraint firstItem="iVx-vS-Zhi" firstAttribute="centerX" secondItem="rsE-cq-NnM" secondAttribute="centerX" id="WOa-Tw-XBV"/>
                             <constraint firstItem="iVx-vS-Zhi" firstAttribute="leading" secondItem="zzs-pA-UsR" secondAttribute="leading" id="aTG-Ib-N0u"/>
                             <constraint firstItem="Ng9-Is-fjA" firstAttribute="leading" secondItem="7Hf-x4-csP" secondAttribute="leadingMargin" id="bvs-w6-Qjn"/>
-                            <constraint firstItem="Ng9-Is-fjA" firstAttribute="top" secondItem="cOG-aI-zZM" secondAttribute="bottom" id="eDb-DT-jnt"/>
                             <constraint firstItem="iVx-vS-Zhi" firstAttribute="top" secondItem="rsE-cq-NnM" secondAttribute="bottom" constant="8" symbolic="YES" id="fbD-lL-NUh"/>
                             <constraint firstAttribute="trailingMargin" secondItem="iVx-vS-Zhi" secondAttribute="trailing" constant="1" id="hCU-PH-PL6"/>
+                            <constraint firstItem="hkP-Kk-s8d" firstAttribute="centerX" secondItem="7Hf-x4-csP" secondAttribute="centerX" id="i0U-va-ATC"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="hkP-Kk-s8d" secondAttribute="trailing" id="iuv-95-XSy"/>
                             <constraint firstItem="zzs-pA-UsR" firstAttribute="centerX" secondItem="7Hf-x4-csP" secondAttribute="centerX" id="jQO-e6-9jV"/>
                             <constraint firstItem="rsE-cq-NnM" firstAttribute="centerX" secondItem="7Hf-x4-csP" secondAttribute="centerX" id="qJ8-t9-rES"/>
+                            <constraint firstItem="hkP-Kk-s8d" firstAttribute="top" secondItem="cOG-aI-zZM" secondAttribute="bottom" constant="8" id="qYE-Xq-1xK"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Sarılıp Yılana" id="do9-sa-4Jk">
@@ -145,10 +180,11 @@
                         <outlet property="claimLabel" destination="Hl7-oU-gyD" id="Iea-Vz-LT9"/>
                         <outlet property="claimOwner" destination="Bzd-Wo-N0f" id="pWJ-qq-uUJ"/>
                         <outlet property="claimTruth" destination="VRL-t6-tjo" id="1wC-g0-ZXZ"/>
-                        <outlet property="newGameButton" destination="hM9-mb-fuX" id="xed-xN-Pda"/>
+                        <outlet property="gameNameLabel" destination="WSk-KT-RCZ" id="kSC-in-3UK"/>
                         <outlet property="remainingClaims" destination="rsE-cq-NnM" id="I5a-Ps-PmL"/>
                         <outlet property="sessionInfo" destination="iVx-vS-Zhi" id="0gM-Pr-y9O"/>
                         <outlet property="showClaimButton" destination="J07-o8-EeN" id="PXs-M9-GZ4"/>
+                        <outlet property="userNameLabel" destination="Q7H-FE-kSR" id="BWt-zM-T6t"/>
                         <segue destination="QMp-rH-8Gq" kind="show" identifier="quitGame" id="kjm-jf-do9"/>
                     </connections>
                 </viewController>
@@ -391,8 +427,10 @@
     </scenes>
     <resources>
         <image name="anil" width="408" height="482"/>
+        <image name="game" width="512" height="512"/>
         <image name="iconsnake" width="32" height="32"/>
         <image name="leaderboard" width="39" height="39"/>
+        <image name="user" width="512" height="512"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="oaJ-09-6Sj"/>

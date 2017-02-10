@@ -32,12 +32,6 @@ class GameData {
         }
     }
     
-    struct Claim {
-        var name: String
-        var sentence: String
-        var truthfulness: Bool
-    }
-    
     func addClaim(senderName: String, sentence: String, truthfulness: Bool){
         
         let newClaim = Claim(name: senderName, sentence: sentence, truthfulness: truthfulness)
@@ -48,22 +42,16 @@ class GameData {
     }
     
     func randomClaim() -> Claim {
-        
         let dice = diceRoll()
-        
         claimCount -= 1
-        
         return claimList.removeAtIndex(dice)
-        
     }
     
     func diceRoll() -> Int {
-        
         return Int(arc4random_uniform(UInt32(claimCount)))
     }
     
     func populateScoresArrayWithNames(claimList: [Claim]){
-        
         for claim in claimList {
             scores[claim.name] = 0
         }
