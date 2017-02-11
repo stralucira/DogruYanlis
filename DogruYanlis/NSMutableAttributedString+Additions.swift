@@ -10,16 +10,16 @@ import Foundation
 import UIKit
 
 extension NSMutableAttributedString {
-    func bold(text:String) -> NSMutableAttributedString {
+    func bold(_ text:String) -> NSMutableAttributedString {
         let attrs:[String:AnyObject] = [NSFontAttributeName : UIFont(name: "AvenirNext-Medium", size: 14)!]
         let boldString = NSMutableAttributedString(string:"\(text)", attributes:attrs)
-        self.appendAttributedString(boldString)
+        self.append(boldString)
         return self
     }
     
-    func normal(text:String)->NSMutableAttributedString {
+    func normal(_ text:String)->NSMutableAttributedString {
         let normal =  NSAttributedString(string: text)
-        self.appendAttributedString(normal)
+        self.append(normal)
         return self
     }
 }

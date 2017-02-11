@@ -9,6 +9,30 @@
 import UIKit
 import AVFoundation
 import Firebase
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 
 class GameViewController: UIViewController, DataEnteredDelegate, ScoreboardDelegate {
@@ -22,18 +46,18 @@ class GameViewController: UIViewController, DataEnteredDelegate, ScoreboardDeleg
     var userCountListenerHandle: UInt!
     var userListenerHandle: UInt!
     
-    var myGroup = dispatch_group_create()
-    var addClaimsGroup = dispatch_group_create()
+    var myGroup = DispatchGroup()
+    var addClaimsGroup = DispatchGroup()
     
     var audioPlayer = AVAudioPlayer()
     
     override func viewDidLoad() {
         
         super.viewDidLoad()
-        let sarilipSound = NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("sarilip", ofType: "m4a")!)
-        try! audioPlayer = AVAudioPlayer(contentsOfURL: sarilipSound, fileTypeHint: "m4a")
+        let sarilipSound = URL(fileURLWithPath: Bundle.main.path(forResource: "sarilip", ofType: "m4a")!)
+        try! audioPlayer = AVAudioPlayer(contentsOf: sarilipSound, fileTypeHint: "m4a")
         audioPlayer.prepareToPlay()
-        anilButton.enabled = false
+        anilButton.isEnabled = false
         
         usersRef = ref.child("sessions/\(data.gameID)/users")
         
@@ -43,29 +67,29 @@ class GameViewController: UIViewController, DataEnteredDelegate, ScoreboardDeleg
             userNameLabel.text = data.userName + " (Admin)"
         } else {
             userNameLabel.text = data.userName
-            showClaimButton.hidden = true
-            anilButton.hidden = true
+            showClaimButton.isHidden = true
+            anilButton.isHidden = true
         }
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        claimListenerHandle = ref.child("sessions/\(data.gameID)/metadata/claim count").observeEventType(.Value, withBlock: {
+        claimListenerHandle = ref.child("sessions/\(data.gameID)/metadata/claim count").observe(.value, with: {
             (snapshot: FIRDataSnapshot) in
             if let count = snapshot.value as? Int {
                 self.remainingClaimValue = count
             }
         })
         
-        userCountListenerHandle = ref.child("sessions/\(data.gameID)/metadata/user count").observeEventType(.Value, withBlock: {
+        userCountListenerHandle = ref.child("sessions/\(data.gameID)/metadata/user count").observe(.value, with: {
             (snapshot: FIRDataSnapshot) in
             if let count = snapshot.value as? Int {
                 self.sessionInfo.text = "\(count) Users in game"
             }
         })
         
-        userListenerHandle = ref.child("sessions/\(data.gameID)/users").observeEventType(.ChildAdded, withBlock: {
+        userListenerHandle = ref.child("sessions/\(data.gameID)/users").observe(.childAdded, with: {
             (snapshot: FIRDataSnapshot) in
             
             self.data.addPlayer(snapshot.key)
@@ -77,10 +101,10 @@ class GameViewController: UIViewController, DataEnteredDelegate, ScoreboardDeleg
         })
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        ref.removeObserverWithHandle(claimListenerHandle)
+        ref.removeObserver(withHandle: claimListenerHandle)
     }
 
     var claimOwnerString: String?
@@ -89,10 +113,10 @@ class GameViewController: UIViewController, DataEnteredDelegate, ScoreboardDeleg
     
     @IBOutlet weak var remainingClaims: UILabel!
     
-    private var remainingClaimValue: Int {
+    fileprivate var remainingClaimValue: Int {
         
         get{
-            let remainingClaimValueString = remainingClaims.text!.componentsSeparatedByString(" ")
+            let remainingClaimValueString = remainingClaims.text!.components(separatedBy: " ")
             return Int(remainingClaimValueString[0])!
         }
         set{
@@ -111,41 +135,41 @@ class GameViewController: UIViewController, DataEnteredDelegate, ScoreboardDeleg
     @IBOutlet weak var gameNameLabel: UILabel!
     @IBOutlet weak var userNameLabel: UILabel!
     
-    @IBAction func newGame(sender: UIBarButtonItem) {
+    @IBAction func newGame(_ sender: UIBarButtonItem) {
         
-        let newGameAlert = UIAlertController(title: "Quit", message: "Are you sure you want to quit game?", preferredStyle: UIAlertControllerStyle.Alert)
+        let newGameAlert = UIAlertController(title: "Quit", message: "Are you sure you want to quit game?", preferredStyle: UIAlertControllerStyle.alert)
         
-        newGameAlert.addAction(UIAlertAction(title: "Yes", style: .Default, handler: {(action: UIAlertAction!) in
+        newGameAlert.addAction(UIAlertAction(title: "Yes", style: .default, handler: {(action: UIAlertAction!) in
             self.data.clear()
             self.clearDisplays()
-            self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
-            self.performSegueWithIdentifier("quitGame", sender: self)
+            self.navigationController?.dismiss(animated: true, completion: nil)
+            self.performSegue(withIdentifier: "quitGame", sender: self)
         }))
         
-        newGameAlert.addAction(UIAlertAction(title: "No", style: .Cancel, handler: {(action: UIAlertAction!) in
+        newGameAlert.addAction(UIAlertAction(title: "No", style: .cancel, handler: {(action: UIAlertAction!) in
         }))
         
-        presentViewController(newGameAlert, animated: true, completion: nil)
+        present(newGameAlert, animated: true, completion: nil)
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "makeYourClaims" {
-            let secondViewController = segue.destinationViewController as! AddClaimsViewController
+            let secondViewController = segue.destination as! AddClaimsViewController
             secondViewController.userName = self.data.userName
             secondViewController.delegate = self
         } else if segue.identifier == "showScoreboard" {
-            let second = segue.destinationViewController as! ScoreboardViewController
+            let second = segue.destination as! ScoreboardViewController
             second.delegate = self
             second.scoreData = data.scores
         }
     }
 
-    @IBAction func showLeaderboardButton(sender: UIBarButtonItem) {
+    @IBAction func showLeaderboardButton(_ sender: UIBarButtonItem) {
         //Currently does nothing.
     }
     
     //Used for DataEnteredDelegate
-    func userDidEnterInformation(claim: Claim) {
+    func userDidEnterInformation(_ claim: Claim) {
         
         //data.addClaim(claim.name, sentence: claim.sentence, truthfulness: claim.truthfulness)
         // Single player artifact.
@@ -157,7 +181,7 @@ class GameViewController: UIViewController, DataEnteredDelegate, ScoreboardDeleg
             "user name"     : data.userName,
             "sentence"      : claim.sentence,
             "truthfulness"  : claim.truthfulness
-        ]
+        ] as [String : Any]
         
         let claimUpdate = [
             "sessions/\(self.data.gameID)/claims/\(index)" : claimToBePushed
@@ -167,7 +191,7 @@ class GameViewController: UIViewController, DataEnteredDelegate, ScoreboardDeleg
         let claimsRef = ref.child("sessions/\(self.data.gameID)/claims")
         let claimCountRef = ref.child("sessions/\(self.data.gameID)/metadata/claim count")
         
-        claimsRef.observeSingleEventOfType(.Value, withBlock: {
+        claimsRef.observeSingleEvent(of: .value, with: {
             (snapshot) in
             index = snapshot.value! as! Int
             
@@ -179,9 +203,9 @@ class GameViewController: UIViewController, DataEnteredDelegate, ScoreboardDeleg
             claimCountRef.runTransactionBlock { (currentData: FIRMutableData) -> FIRTransactionResult in
                 if let count = currentData.value as? Int {
                     currentData.value = count + 1
-                    return FIRTransactionResult.successWithValue(currentData)
+                    return FIRTransactionResult.success(withValue: currentData)
                 } else {
-                    return FIRTransactionResult.successWithValue(currentData)
+                    return FIRTransactionResult.success(withValue: currentData)
                 }
             }
         })
@@ -190,7 +214,7 @@ class GameViewController: UIViewController, DataEnteredDelegate, ScoreboardDeleg
         //remainingClaimValue = data.claimCount
     }
     
-    func increaseUserScore(user: String, byScore score: Int){
+    func increaseUserScore(_ user: String, byScore score: Int){
         if (score == 1) {
             data.addPoint(user)
         } else if (score == 2) {
@@ -202,7 +226,7 @@ class GameViewController: UIViewController, DataEnteredDelegate, ScoreboardDeleg
         }
     }
     
-    @IBAction func showClaim(sender: UIButton) {
+    @IBAction func showClaim(_ sender: UIButton) {
         
         if (data.claimCount != 0 ) {
             claimOwner.text = nil
@@ -219,27 +243,27 @@ class GameViewController: UIViewController, DataEnteredDelegate, ScoreboardDeleg
             
             audioPlayer.play()
         
-            anilButton.enabled = true
-            showClaimButton.enabled = false
+            anilButton.isEnabled = true
+            showClaimButton.isEnabled = false
         }
     }
     
-    @IBAction func reveal(sender: AnyObject) {
+    @IBAction func reveal(_ sender: AnyObject) {
         if let temp = claimOwnerString{
             claimOwner.text = " - \(temp)"
         }
         if let tempBool = claimTruthBool {
             
             if (tempBool){
-                claimTruth.textColor = UIColor.greenColor()
+                claimTruth.textColor = UIColor.green
                 claimTruth.text = "True"
             } else {
-                claimTruth.textColor = UIColor.redColor()
+                claimTruth.textColor = UIColor.red
                 claimTruth.text = "False"
             }
         }
-        showClaimButton.enabled = true
-        anilButton.enabled = false
+        showClaimButton.isEnabled = true
+        anilButton.isEnabled = false
     }
     
     func clearDisplays() {
@@ -250,7 +274,7 @@ class GameViewController: UIViewController, DataEnteredDelegate, ScoreboardDeleg
         claimOwnerString = nil
         claimTruthBool = nil
         
-        anilButton.enabled = false
-        showClaimButton.enabled = true
+        anilButton.isEnabled = false
+        showClaimButton.isEnabled = true
     }
 }

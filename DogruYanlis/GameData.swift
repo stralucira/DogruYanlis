@@ -30,7 +30,7 @@ class GameData {
 
     // Some claims are sentence
     // Add claims to the system. Sentence. Truthfullness.
-    func addClaim(senderName: String, sentence: String, truthfulness: Bool){
+    func addClaim(_ senderName: String, sentence: String, truthfulness: Bool){
         
         let newClaim = Claim(name: senderName, sentence: sentence, truthfulness: truthfulness)
         
@@ -42,39 +42,39 @@ class GameData {
     func randomClaim() -> Claim {
         let dice = diceRoll()
         claimCount -= 1
-        return claimList.removeAtIndex(dice)
+        return claimList.remove(at: dice)
     }
     
     func diceRoll() -> Int {
         return Int(arc4random_uniform(UInt32(claimCount)))
     }
     
-    func populateScoresArrayWithNames(claimList: [Claim]){
+    func populateScoresArrayWithNames(_ claimList: [Claim]){
         for claim in claimList {
             scores[claim.name] = 0
         }
     }
     
-    func addPoint(name: String){
+    func addPoint(_ name: String){
         if let score = scores[name]{
             scores[name] = score + 1
         }
     }
     
-    func addYilanPoint(name: String){
+    func addYilanPoint(_ name: String){
         if let score = scores[name]{
             scores[name] = score + 2
         }
     }
     
-    func subtractPoint(name: String){
+    func subtractPoint(_ name: String){
         if let score = scores[name]{
             scores[name] = score - 1
         }
     }
     
     
-    func addPlayer(name: String) {
+    func addPlayer(_ name: String) {
         if !(players.contains(name)) {
             players.append(name)
             scores[name] = 0

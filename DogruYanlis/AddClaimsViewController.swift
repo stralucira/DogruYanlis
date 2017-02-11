@@ -10,7 +10,7 @@ import UIKit
 
 protocol DataEnteredDelegate: class {
     
-    func userDidEnterInformation(claim: Claim)
+    func userDidEnterInformation(_ claim: Claim)
 
 }
 
@@ -20,14 +20,14 @@ class AddClaimsViewController: UIViewController {
     //var addClaimsGroup = dispatch_group_create()
     
     let _greenColor = UIColor( red: 18/255, green: 136/255, blue: 2/255, alpha: 1.0 )
-    let greenColor = UIColor( red: 18/255, green: 136/255, blue: 2/255, alpha: 1.0 ).CGColor
+    let greenColor = UIColor( red: 18/255, green: 136/255, blue: 2/255, alpha: 1.0 ).cgColor
     
     let _redColor = UIColor( red: 156/255, green: 0/255, blue: 0/255, alpha: 1.0 )
-    let redColor = UIColor( red: 156/255, green: 0/255, blue: 0/255, alpha: 1.0 ).CGColor
+    let redColor = UIColor( red: 156/255, green: 0/255, blue: 0/255, alpha: 1.0 ).cgColor
     
-    let mySwitch = SevenSwitch(frame: CGRectZero)
-    let mySwitch2 = SevenSwitch(frame: CGRectZero)
-    let mySwitch3 = SevenSwitch(frame: CGRectZero)
+    let mySwitch = SevenSwitch(frame: CGRect.zero)
+    let mySwitch2 = SevenSwitch(frame: CGRect.zero)
+    let mySwitch3 = SevenSwitch(frame: CGRect.zero)
     
     var userName: String = ""
     
@@ -35,15 +35,15 @@ class AddClaimsViewController: UIViewController {
         
         super.viewDidLoad()
     
-        mySwitch.frame = CGRectMake(290, 150, 80, 33)
-        mySwitch2.frame = CGRectMake(290, 201, 80, 33)
-        mySwitch3.frame = CGRectMake(290, 252, 80, 33)
+        mySwitch.frame = CGRect(x: 290, y: 150, width: 80, height: 33)
+        mySwitch2.frame = CGRect(x: 290, y: 201, width: 80, height: 33)
+        mySwitch3.frame = CGRect(x: 290, y: 252, width: 80, height: 33)
         switchHandler(mySwitch)
         switchHandler(mySwitch2)
         switchHandler(mySwitch3)
-        mySwitch.addTarget(self, action: #selector(AddClaimsViewController.switchOne(_:)), forControlEvents: UIControlEvents.ValueChanged)
-        mySwitch2.addTarget(self, action: #selector(AddClaimsViewController.switchTwo(_:)), forControlEvents: UIControlEvents.ValueChanged)
-        mySwitch3.addTarget(self, action: #selector(AddClaimsViewController.switchThree(_:)), forControlEvents: UIControlEvents.ValueChanged)
+        mySwitch.addTarget(self, action: #selector(AddClaimsViewController.switchOne(_:)), for: UIControlEvents.valueChanged)
+        mySwitch2.addTarget(self, action: #selector(AddClaimsViewController.switchTwo(_:)), for: UIControlEvents.valueChanged)
+        mySwitch3.addTarget(self, action: #selector(AddClaimsViewController.switchThree(_:)), for: UIControlEvents.valueChanged)
 
         self.view.addSubview(mySwitch)
         self.view.addSubview(mySwitch2)
@@ -85,7 +85,7 @@ class AddClaimsViewController: UIViewController {
     
     @IBOutlet weak var sentenceOne: UITextField!
     
-    func switchOne(sender: SevenSwitch) {
+    func switchOne(_ sender: SevenSwitch) {
         if ( sender.isOn() == false ) {
             sentenceOne.layer.borderColor = redColor
         } else {
@@ -95,7 +95,7 @@ class AddClaimsViewController: UIViewController {
     
     @IBOutlet weak var sentenceTwo: UITextField!
     
-    @IBAction func switchTwo(sender: SevenSwitch) {
+    @IBAction func switchTwo(_ sender: SevenSwitch) {
         
         if ( sender.isOn() == false ) {
             sentenceTwo.layer.borderColor = redColor
@@ -105,7 +105,7 @@ class AddClaimsViewController: UIViewController {
     }
     @IBOutlet weak var sentenceThree: UITextField!
     
-    @IBAction func switchThree(sender: SevenSwitch) {
+    @IBAction func switchThree(_ sender: SevenSwitch) {
         
         if ( sender.isOn() == false ) {
             sentenceThree.layer.borderColor = redColor
@@ -115,7 +115,7 @@ class AddClaimsViewController: UIViewController {
         
     }
     
-    @IBAction func save(sender: UIButton) {
+    @IBAction func save(_ sender: UIButton) {
         if textFieldsValid() {
             if ((sentenceOne.text !=  "") || (sentenceTwo.text !=  "") || (sentenceThree.text !=  "")){
             
@@ -146,18 +146,18 @@ class AddClaimsViewController: UIViewController {
                 let successAlertController = UIAlertController(
                     title: titleMessage,
                     message: successMessage,
-                    preferredStyle: UIAlertControllerStyle.Alert
+                    preferredStyle: UIAlertControllerStyle.alert
                 )
                 successAlertController.addAction(
                     UIAlertAction(
                         title: "Okay",
-                        style: UIAlertActionStyle.Default,
+                        style: UIAlertActionStyle.default,
                         handler: { (successAlertController) in
-                            _ = self.navigationController?.popViewControllerAnimated(true)
+                            _ = self.navigationController?.popViewController(animated: true)
                         }
                     )
                 )
-                self.presentViewController(successAlertController, animated: true, completion: nil)
+                self.present(successAlertController, animated: true, completion: nil)
                 clear()
             }
         }
@@ -167,10 +167,10 @@ class AddClaimsViewController: UIViewController {
         if (((sentenceOne.text == "") && (sentenceTwo.text == "")) && (sentenceThree.text == "")) {
             
             let claimNotEnteredAlertController = UIAlertController(title: "", message:
-                "You have not entered any claims!", preferredStyle: UIAlertControllerStyle.Alert)
-            claimNotEnteredAlertController.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default,handler: nil))
+                "You have not entered any claims!", preferredStyle: UIAlertControllerStyle.alert)
+            claimNotEnteredAlertController.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.default,handler: nil))
             
-            self.presentViewController(claimNotEnteredAlertController, animated: true, completion: nil)
+            self.present(claimNotEnteredAlertController, animated: true, completion: nil)
             return false
         } else {
             return true
@@ -178,13 +178,13 @@ class AddClaimsViewController: UIViewController {
     }
 
     
-    func switchHandler(mySwitch: SevenSwitch) -> Void {
+    func switchHandler(_ mySwitch: SevenSwitch) -> Void {
         mySwitch.offLabel.text = "FALSE"
-        mySwitch.offLabel.textColor = UIColor.whiteColor()
-        mySwitch.onLabel.textColor = UIColor.whiteColor()
+        mySwitch.offLabel.textColor = UIColor.white
+        mySwitch.onLabel.textColor = UIColor.white
         mySwitch.inactiveColor =  _redColor
         mySwitch.activeColor = _greenColor
-        mySwitch.tintColor = UIColor.clearColor()
+        mySwitch.tintColor = UIColor.clear
         mySwitch.thumbImage = UIImage(named: "iconsnake")
         mySwitch.on = true
         mySwitch.onLabel.text = "TRUE"

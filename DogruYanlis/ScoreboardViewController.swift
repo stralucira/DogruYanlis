@@ -7,10 +7,34 @@
 //
 
 import UIKit
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 protocol ScoreboardDelegate: class {
     
-    func increaseUserScore(name: String, byScore: Int)
+    func increaseUserScore(_ name: String, byScore: Int)
     
 }
 
@@ -37,11 +61,11 @@ class ScoreboardViewController: UIViewController, UITableViewDataSource, UITable
     
     @IBOutlet weak var leaderboardTable: UITableView!
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return scoreData!.count
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = UITableViewCell()
         let nameLabel = UILabel(frame: CGRect(x:25, y:0, width:100, height:50))
@@ -52,15 +76,15 @@ class ScoreboardViewController: UIViewController, UITableViewDataSource, UITable
         let addSinglePointButton = MyButton(frame: CGRect(x: 320, y: 0, width: 50, height: 50))
         let subtractSinglePointButton = MyButton(frame: CGRect(x: 240, y: 0, width: 50, height: 50))
         
-        subtractSinglePointButton.setTitle("-", forState: .Normal)
-        subtractSinglePointButton.setTitleColor(greenColor, forState: .Normal)
+        subtractSinglePointButton.setTitle("-", for: UIControlState())
+        subtractSinglePointButton.setTitleColor(greenColor, for: UIControlState())
         subtractSinglePointButton.tagString = names[indexPath.row]
-        subtractSinglePointButton.addTarget(self, action: #selector(ScoreboardViewController.minusPressed(_:)), forControlEvents: .TouchUpInside)
+        subtractSinglePointButton.addTarget(self, action: #selector(ScoreboardViewController.minusPressed(_:)), for: .touchUpInside)
         
-        addSinglePointButton.setTitle("+", forState: .Normal)
-        addSinglePointButton.setTitleColor(greenColor, forState: .Normal)
+        addSinglePointButton.setTitle("+", for: UIControlState())
+        addSinglePointButton.setTitleColor(greenColor, for: UIControlState())
         addSinglePointButton.tagString = names[indexPath.row]
-        addSinglePointButton.addTarget(self, action: #selector(ScoreboardViewController.pressed(_:)), forControlEvents: .TouchUpInside)
+        addSinglePointButton.addTarget(self, action: #selector(ScoreboardViewController.pressed(_:)), for: .touchUpInside)
 
         nameLabel.text = names[indexPath.row]
         scoreLabel.text = "\(scoreData![names[indexPath.row]]!)"
@@ -74,18 +98,18 @@ class ScoreboardViewController: UIViewController, UITableViewDataSource, UITable
     }
     
     //Table height
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 50
     }
     
-    func pressed(sender: MyButton!){
+    func pressed(_ sender: MyButton!){
         let playerName = sender.tagString!
         scoreData![playerName]! += 1
         delegate?.increaseUserScore(playerName, byScore: 1)
         self.leaderboardTable.reloadData()
     }
     
-    func minusPressed(sender: MyButton!){
+    func minusPressed(_ sender: MyButton!){
         let playerName = sender.tagString!
         if(scoreData![playerName] > 0 ){
             scoreData![playerName]! -= 1
