@@ -27,6 +27,8 @@ class AddClaimsViewController: UIViewController {
     let mySwitch2 = SevenSwitch(frame: CGRectZero)
     let mySwitch3 = SevenSwitch(frame: CGRectZero)
     
+    var userName: String = ""
+    
     override func viewDidLoad() {
         
         super.viewDidLoad()
@@ -79,8 +81,6 @@ class AddClaimsViewController: UIViewController {
     
     weak var delegate: DataEnteredDelegate? = nil
     
-    @IBOutlet weak var playerName: UITextField!
-    
     @IBOutlet weak var sentenceOne: UITextField!
     
     func switchOne(sender: SevenSwitch) {
@@ -115,30 +115,30 @@ class AddClaimsViewController: UIViewController {
     
     @IBAction func save(sender: UIButton) {
         if textFieldsValid() {
-            if (playerName.text != "") && ((sentenceOne.text !=  "") || (sentenceTwo.text !=  "") || (sentenceThree.text !=  "")){
+            if ((sentenceOne.text !=  "") || (sentenceTwo.text !=  "") || (sentenceThree.text !=  "")){
             
                 if (sentenceOne.text != "") {
-                    delegate?.userDidEnterInformation(Claim(name: playerName.text!, sentence: sentenceOne.text!, truthfulness: mySwitch.isOn()))
+                    delegate?.userDidEnterInformation(Claim(name: userName, sentence: sentenceOne.text!, truthfulness: mySwitch.isOn()))
                     successfulClaims += 1
                 }
         
                 if (sentenceTwo.text != "") {
-                    delegate?.userDidEnterInformation(Claim(name: playerName.text!, sentence: sentenceTwo.text!, truthfulness: mySwitch2.isOn()))
+                    delegate?.userDidEnterInformation(Claim(name: userName, sentence: sentenceTwo.text!, truthfulness: mySwitch2.isOn()))
                     successfulClaims += 1
                 }
         
                 if (sentenceThree.text != "") {
-                    delegate?.userDidEnterInformation(Claim(name: playerName.text!, sentence: sentenceThree.text!, truthfulness: mySwitch3.isOn()))
+                    delegate?.userDidEnterInformation(Claim(name: userName, sentence: sentenceThree.text!, truthfulness: mySwitch3.isOn()))
                     successfulClaims += 1
                 }
             
                 if (successfulClaims == 1) {
                     successMessage = "Your 1 claim has been submitted."
-                    titleMessage = "Gratz \(playerName.text!)!"
+                    titleMessage = "Gratz \(userName)!"
                 
                 } else {
                     successMessage = "Your \(successfulClaims) claims has been submitted."
-                    titleMessage = "Gratz \(playerName.text!)!"
+                    titleMessage = "Gratz \(userName)!"
                 }
                 
                 let successAlertController = UIAlertController(
@@ -162,20 +162,7 @@ class AddClaimsViewController: UIViewController {
     }
     
     func textFieldsValid() -> Bool {
-        if (playerName.text == "") {
-            let nameNotEnteredAlertController = UIAlertController(title: "", message:
-                "Please type your name before submitting!", preferredStyle: UIAlertControllerStyle.Alert)
-            nameNotEnteredAlertController.addAction(
-                UIAlertAction(
-                    title: "Okay",
-                    style: UIAlertActionStyle.Default,
-                    handler: nil
-                )
-            )
-            self.presentViewController(nameNotEnteredAlertController, animated: true, completion: nil)
-            return false
-            
-        } else if (((sentenceOne.text == "") && (sentenceTwo.text == "")) && (sentenceThree.text == "")) {
+        if (((sentenceOne.text == "") && (sentenceTwo.text == "")) && (sentenceThree.text == "")) {
             
             let claimNotEnteredAlertController = UIAlertController(title: "", message:
                 "You have not entered any claims!", preferredStyle: UIAlertControllerStyle.Alert)
@@ -204,7 +191,6 @@ class AddClaimsViewController: UIViewController {
     //Clear function
     func clear() {
         
-        playerName.text = nil
         sentenceOne.text = nil
         sentenceTwo.text = nil
         sentenceThree.text = nil

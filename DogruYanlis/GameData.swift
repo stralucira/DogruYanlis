@@ -31,7 +31,8 @@ class GameData {
             return Array(scores.keys)
         }
     }
-    
+    // Some claims are sentence
+    // Add claims to the system. Sentence. Truthfullness.
     func addClaim(senderName: String, sentence: String, truthfulness: Bool){
         
         let newClaim = Claim(name: senderName, sentence: sentence, truthfulness: truthfulness)

@@ -114,6 +114,7 @@ class GameViewController: UIViewController, DataEnteredDelegate, ScoreboardDeleg
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "makeYourClaims" {
             let secondViewController = segue.destinationViewController as! AddClaimsViewController
+            secondViewController.userName = self.data.userName
             secondViewController.delegate = self
         } else if segue.identifier == "showScoreboard" {
             let second = segue.destinationViewController as! ScoreboardViewController
@@ -123,16 +124,18 @@ class GameViewController: UIViewController, DataEnteredDelegate, ScoreboardDeleg
     }
 
     @IBAction func showLeaderboardButton(sender: UIBarButtonItem) {
-    
+        //Currently does nothing.
     }
     
     //Used for DataEnteredDelegate
     func userDidEnterInformation(claim: Claim) {
-        data.addClaim(claim.name, sentence: claim.sentence, truthfulness: claim.truthfulness)
-        data.addPlayer(claim.name)
+        
+        //data.addClaim(claim.name, sentence: claim.sentence, truthfulness: claim.truthfulness)
+        // Single player artifact.
+        //data.addPlayer(claim.name)
         
         let claimToBePushed = [
-            "user name"     : claim.name,
+            "user name"     : data.userName,
             "sentence"      : claim.sentence,
             "truthfulness"  : claim.truthfulness
         ]

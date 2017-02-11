@@ -228,7 +228,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ce0-CN-ok0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="961" y="716"/>
+            <point key="canvasLocation" x="758" y="-152"/>
         </scene>
         <!--Make Your Claims-->
         <scene sceneID="tne-QT-ifu">
@@ -260,12 +260,6 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Your Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fkz-dF-7vY">
-                                <rect key="frame" x="126" y="93" width="122" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="R9a-yc-zVB">
                                 <rect key="frame" x="0.0" y="617" width="375" height="50"/>
                                 <color key="backgroundColor" red="0.070588235294117646" green="0.52941176470588236" blue="0.0078431372549019607" alpha="1" colorSpace="calibratedRGB"/>
@@ -280,18 +274,26 @@
                                     <action selector="save:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Ojo-0h-AhK"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Write down some claims and mark them true or false!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zUI-DQ-njF">
+                                <rect key="frame" x="36" y="79" width="303" height="33.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="zUI-DQ-njF" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="15" id="E7R-Qa-3xx"/>
                             <constraint firstItem="R9a-yc-zVB" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="TUR-dg-cAd"/>
                             <constraint firstAttribute="trailingMargin" secondItem="R9a-yc-zVB" secondAttribute="trailing" constant="-16" id="izn-uh-JnM"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="R9a-yc-zVB" secondAttribute="bottom" id="oBR-fU-ifA"/>
                             <constraint firstItem="R9a-yc-zVB" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-16" id="uZh-gA-tN9"/>
+                            <constraint firstItem="zUI-DQ-njF" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="20" id="wQV-ES-IOg"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="zUI-DQ-njF" secondAttribute="trailing" constant="20" id="zAE-in-EVe"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Make Your Claims" id="ssv-VK-S0s"/>
                     <connections>
-                        <outlet property="playerName" destination="fkz-dF-7vY" id="Hhk-Hu-2OM"/>
                         <outlet property="sentenceOne" destination="Iqg-0x-23g" id="zqo-FX-5Sm"/>
                         <outlet property="sentenceThree" destination="WCa-6M-dRX" id="hxL-nM-3Ha"/>
                         <outlet property="sentenceTwo" destination="JYj-kc-R0A" id="4eA-c2-zhY"/>
@@ -299,7 +301,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2570" y="716"/>
+            <point key="canvasLocation" x="2716" y="-152"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="TMN-Y9-R9x">
