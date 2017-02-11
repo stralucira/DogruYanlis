@@ -19,6 +19,7 @@ class GameViewController: UIViewController, DataEnteredDelegate, ScoreboardDeleg
     var usersRef: FIRDatabaseReference!
     
     var claimListenerHandle: UInt!
+    var userCountListenerHandle: UInt!
     
     var myGroup = dispatch_group_create()
     
@@ -33,10 +34,6 @@ class GameViewController: UIViewController, DataEnteredDelegate, ScoreboardDeleg
         anilButton.enabled = false
         
         usersRef = ref.child("sessions/\(data.gameID)/users")
-        
-        let formattedString = NSMutableAttributedString()
-        
-        sessionInfo.attributedText = formattedString.bold("Session Info").normal("\nLogged in to game: ").bold(data.gameID).normal("\nWith user name: ").bold(data.userName).normal("\nPlayers in game: ").bold(String(data.players.count))
         
         gameNameLabel.text = " " + data.gameID
         
@@ -58,6 +55,15 @@ class GameViewController: UIViewController, DataEnteredDelegate, ScoreboardDeleg
                 self.remainingClaimValue = count
             }
         })
+        
+        userCountListenerHandle = ref.child("sessions/\(data.gameID)/metadata/user count").observeEventType(.Value, withBlock: {
+            (snapshot: FIRDataSnapshot) in
+            if let count = snapshot.value as? Int {
+                self.sessionInfo.text = "\(count) Users in game"
+            }
+        })
+        
+        
     }
     
     override func viewWillDisappear(animated: Bool) {
