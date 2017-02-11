@@ -4,6 +4,11 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>Eureka.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-DogruYanlis.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -12,7 +17,12 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>45EBAC23688547AD8BFF243E64A5F6EC</key>
+		<key>6332B27DD93F8E66B769691EBA1CC6B9</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>EE774F234E810C0DD8263855D7A1A166</key>
 		<dict>
 			<key>primary</key>
 			<true/>

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Eureka
 
 protocol DataEnteredDelegate: class {
     
