@@ -17,6 +17,8 @@ protocol DataEnteredDelegate: class {
 @IBDesignable
 class AddClaimsViewController: UIViewController {
 
+    //var addClaimsGroup = dispatch_group_create()
+    
     let _greenColor = UIColor( red: 18/255, green: 136/255, blue: 2/255, alpha: 1.0 )
     let greenColor = UIColor( red: 18/255, green: 136/255, blue: 2/255, alpha: 1.0 ).CGColor
     

@@ -1,4 +1,5 @@
 PODS:
+  - Eureka (2.0.0-beta.1)
   - Firebase/Analytics (3.4.0):
     - FirebaseAnalytics (~> 3.3)
   - Firebase/Core (3.4.0):
@@ -21,10 +22,12 @@ PODS:
     - GoogleSymbolUtilities (~> 1.0)
 
 DEPENDENCIES:
+  - Eureka (~> 2.0.0-beta.1)
   - Firebase/Core
   - Firebase/Database
 
 SPEC CHECKSUMS:
+  Eureka: d014adf16406745e1a78d5790ea37ed130a0a8e5
   Firebase: 754562547af419cc2f4b15247fee419081924bc2
   FirebaseAnalytics: 228be2991cb28efb96cdafc4d62f64680e615c69
   FirebaseDatabase: 59bea2e7dfd81b3b8b2f8e396caf1a52c2ced6f7
@@ -33,6 +36,6 @@ SPEC CHECKSUMS:
   GoogleSymbolUtilities: 33117db1b5f290c6fbf259585e4885b4c84b98d7
   GoogleUtilities: 56c5ac05b7aa5dc417a1bb85221a9516e04d7032
 
-PODFILE CHECKSUM: 88b9f17a92d99acc1a4096868c496f94a8966bc5
+PODFILE CHECKSUM: 30b024cbdba8f8e25a2054e462ad3bd937dc2715
 
 COCOAPODS: 1.0.0

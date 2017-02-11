@@ -23,6 +23,7 @@ class GameViewController: UIViewController, DataEnteredDelegate, ScoreboardDeleg
     var userListenerHandle: UInt!
     
     var myGroup = dispatch_group_create()
+    var addClaimsGroup = dispatch_group_create()
     
     var audioPlayer = AVAudioPlayer()
     
@@ -69,14 +70,11 @@ class GameViewController: UIViewController, DataEnteredDelegate, ScoreboardDeleg
             
             self.data.addPlayer(snapshot.key)
             
-            // Maybe call a .Value first, then .ChildAdded inside this block ?
-            // This could make .ChildAdded trigger only once!
-            // Check documentation.
-           
+            // Maybe call a .Value first, then .ChildAdded inside this block?
+            // Could make .ChildAdded trigger only once!
+            // Test on multiple devices.
+    
         })
-        
-        
-        
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -153,15 +151,23 @@ class GameViewController: UIViewController, DataEnteredDelegate, ScoreboardDeleg
         // Single player artifact.
         //data.addPlayer(claim.name)
         
+        var index : Int = 0
+        
         let claimToBePushed = [
             "user name"     : data.userName,
             "sentence"      : claim.sentence,
             "truthfulness"  : claim.truthfulness
         ]
-        var index : Int = 0
+        
+        let claimUpdate = [
+            "sessions/\(self.data.gameID)/claims/\(index)" : claimToBePushed
+        ]
+        self.ref.updateChildValues(claimUpdate)
+        
+        let claimsRef = ref.child("sessions/\(self.data.gameID)/claims")
         let claimCountRef = ref.child("sessions/\(self.data.gameID)/metadata/claim count")
         
-        claimCountRef.observeSingleEventOfType(.Value, withBlock: {
+        claimsRef.observeSingleEventOfType(.Value, withBlock: {
             (snapshot) in
             index = snapshot.value! as! Int
             
@@ -199,22 +205,22 @@ class GameViewController: UIViewController, DataEnteredDelegate, ScoreboardDeleg
     @IBAction func showClaim(sender: UIButton) {
         
         if (data.claimCount != 0 ) {
-        claimOwner.text = nil
-        claimTruth.text = nil
+            claimOwner.text = nil
+            claimTruth.text = nil
         
-        let claimToBeShowed = data.randomClaim()
+            let claimToBeShowed = data.randomClaim()
         
-        claimLabel.text = "\"\(claimToBeShowed.sentence)\""
+            claimLabel.text = "\"\(claimToBeShowed.sentence)\""
         
-        claimOwnerString = claimToBeShowed.name
-        claimTruthBool = claimToBeShowed.truthfulness
+            claimOwnerString = claimToBeShowed.name
+            claimTruthBool = claimToBeShowed.truthfulness
         
-        remainingClaimValue = data.claimCount
+            remainingClaimValue = data.claimCount
             
-        audioPlayer.play()
-            
-        anilButton.enabled = true
-        showClaimButton.enabled = false
+            audioPlayer.play()
+        
+            anilButton.enabled = true
+            showClaimButton.enabled = false
         }
     }
     
