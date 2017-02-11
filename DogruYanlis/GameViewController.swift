@@ -20,6 +20,7 @@ class GameViewController: UIViewController, DataEnteredDelegate, ScoreboardDeleg
     
     var claimListenerHandle: UInt!
     var userCountListenerHandle: UInt!
+    var userListenerHandle: UInt!
     
     var myGroup = dispatch_group_create()
     
@@ -62,6 +63,18 @@ class GameViewController: UIViewController, DataEnteredDelegate, ScoreboardDeleg
                 self.sessionInfo.text = "\(count) Users in game"
             }
         })
+        
+        userListenerHandle = ref.child("sessions/\(data.gameID)/users").observeEventType(.ChildAdded, withBlock: {
+            (snapshot: FIRDataSnapshot) in
+            
+            self.data.addPlayer(snapshot.key)
+            
+            // Maybe call a .Value first, then .ChildAdded inside this block ?
+            // This could make .ChildAdded trigger only once!
+            // Check documentation.
+           
+        })
+        
         
         
     }

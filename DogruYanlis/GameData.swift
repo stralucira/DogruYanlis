@@ -26,11 +26,8 @@ class GameData {
     
     var scores: [String: Int] = [:]
     
-    var players: [String] {
-        get{
-            return Array(scores.keys)
-        }
-    }
+    var players: [String] = []
+
     // Some claims are sentence
     // Add claims to the system. Sentence. Truthfullness.
     func addClaim(senderName: String, sentence: String, truthfulness: Bool){
@@ -78,7 +75,12 @@ class GameData {
     
     
     func addPlayer(name: String) {
-        scores[name] = 0
+        if !(players.contains(name)) {
+            players.append(name)
+            scores[name] = 0
+        } else {
+            print("Player \"\(name)\" already exists in local data structure")
+        }
     }
     
     func clear() {

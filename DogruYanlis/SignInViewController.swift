@@ -16,7 +16,8 @@ class SignInViewController: UIViewController, UITextFieldDelegate {
 
     var ref: FIRDatabaseReference!
     
-    var myGroup = dispatch_group_create()
+    var sessionExistsGroup = dispatch_group_create()
+    var userExistsGroup = dispatch_group_create()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -114,43 +115,86 @@ class SignInViewController: UIViewController, UITextFieldDelegate {
 
     @IBAction func joinGame(sender: UIButton) {
         if textFieldsValid() {
-            gameExists(gameName, completionHandler: { (exists) in
-                if exists {
-                    self.dismissViewControllerAnimated(true, completion: nil)
-                    self.performSegueWithIdentifier("joinGame", sender: self)
+            gameExists(gameName, completionHandler: { (gameExists) in
+                if gameExists {
+                    self.userExistsInGame(self.userName, completionHandler: { (userExists) in
+                        if userExists {
+                            self.presentUserExistsAlert()
+                        } else {
+                            self.dismissViewControllerAnimated(true, completion: nil)
+                            self.performSegueWithIdentifier("joinGame", sender: self)
+                        }
+                    })
                 } else {
-                    let gameDoesNotExistAlert = UIAlertController(title:"Game Not Found", message: "Please enter an active game name to join.", preferredStyle: UIAlertControllerStyle.Alert)
-                    gameDoesNotExistAlert.addAction(
-                        UIAlertAction(
-                            title: "Ok",
-                            style: UIAlertActionStyle.Cancel,
-                            handler: nil
-                        )
-                    )
-                    self.presentViewController(gameDoesNotExistAlert, animated: true, completion: nil)
+                    self.presentGameNotFoundAlert()
                 }
             })
         }
     }
     
+    
     func gameExists(gameName: String, completionHandler: (Bool) -> ()) {
         var gameExists: Bool = false
-        dispatch_group_enter(myGroup)
+        dispatch_group_enter(sessionExistsGroup)
         ref.child("sessions").observeSingleEventOfType(.Value,
             withBlock: {(snapshot) in
                 let sessions = snapshot.value as? NSDictionary
                 if let sessions = sessions {
                     gameExists = sessions[gameName] != nil
-                    dispatch_group_leave(self.myGroup)
+                    dispatch_group_leave(self.sessionExistsGroup)
                 } else {
                     print("No sessions exist in database")
                     completionHandler(false)
                 }
             }
         )
-        dispatch_group_notify(myGroup, dispatch_get_main_queue(), {
+        dispatch_group_notify(sessionExistsGroup, dispatch_get_main_queue(), {
             completionHandler(gameExists)
         })
+    }
+    
+    func userExistsInGame(userName: String , completionHandler: (Bool) -> ()) {
+        var userExists: Bool = false
+        dispatch_group_enter(userExistsGroup)
+        ref.child("sessions/\(gameName)/users").observeSingleEventOfType(.Value,
+            withBlock: {(snapshot) in
+                let users = snapshot.value as? NSDictionary
+                if let users = users {
+                    userExists = users[userName] != nil
+                    dispatch_group_leave(self.userExistsGroup)
+                } else {
+                    print("User does not exists in game")
+                    completionHandler(false)
+                }
+            }
+        )
+        dispatch_group_notify(userExistsGroup, dispatch_get_main_queue(), {
+            completionHandler(userExists)
+        })
+    }
+    
+    func presentUserExistsAlert() {
+        let userExistsAlert = UIAlertController(title:"User Already Exists", message: "Please enter a different user name to join.", preferredStyle: UIAlertControllerStyle.Alert)
+        userExistsAlert.addAction(
+            UIAlertAction(
+                title: "Ok",
+                style: UIAlertActionStyle.Cancel,
+                handler: nil
+            )
+        )
+        self.presentViewController(userExistsAlert, animated: true, completion: nil)
+    }
+
+    func presentGameNotFoundAlert() {
+        let gameDoesNotExistAlert = UIAlertController(title:"Game Not Found", message: "Please enter an active game name to join.", preferredStyle: UIAlertControllerStyle.Alert)
+        gameDoesNotExistAlert.addAction(
+            UIAlertAction(
+                title: "Ok",
+                style: UIAlertActionStyle.Cancel,
+                handler: nil
+            )
+        )
+        self.presentViewController(gameDoesNotExistAlert, animated: true, completion: nil)
     }
     
     func textFieldsValid() -> Bool {
@@ -191,11 +235,6 @@ class SignInViewController: UIViewController, UITextFieldDelegate {
         )
         self.presentViewController(gameExistsAlert, animated: true, completion: nil)
     }
-    
-//    func joinGameWithName(gameName: String) {
-//
-//
-//    }
     
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
     
