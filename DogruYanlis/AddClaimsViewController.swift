@@ -69,24 +69,58 @@ class AddClaimsViewController: FormViewController {
                 <<< TextAreaRow("First Claim") {
                     $0.placeholder = "First Claim"
                     $0.textAreaHeight = .dynamic(initialTextViewHeight: 40)
+                    $0.validationOptions = .validatesOnDemand
+                    $0.add(rule: RuleMinLength(minLength: 1))
+                }.onRowValidationChanged { cell, row in
+                    let rowIndex = row.indexPath!.row
+                    while row.section!.count > rowIndex + 1 && row.section?[rowIndex  + 1] is LabelRow {
+                        row.section?.remove(at: rowIndex + 1)
+                    }
+                    if !row.isValid {
+                        let labelRow = LabelRow() {
+                            $0.title = "Claim cannot be empty"
+                            $0.cell.height = { 30 }
+                        }
+                        row.section?.insert(labelRow, at: row.indexPath!.row + 1)
+                    }
                 }
                 <<< CheckRow() {
                     $0.title = "True"
                     $0.value = true
                 }
                 
-                <<< TextAreaRow() {
+                <<< TextAreaRow("Second Claim") {
+                    
+                    var shouldBePresented = false
                     $0.placeholder = "Second Claim"
                     $0.textAreaHeight = .dynamic(initialTextViewHeight: 40)
+                    $0.validationOptions = .validatesOnDemand
+                    $0.add(rule: RuleMinLength(minLength: 1))
                     $0.hidden = Condition.function(["sliderRowTag"], { form in
                         let sliderRowValue = (form.rowBy(tag: "sliderRowTag") as? SliderRowInt)?.value
                         if (sliderRowValue! < 2) {
-                            return true
+                            shouldBePresented = true
+                            return shouldBePresented
                         } else {
-                            return false
+                            shouldBePresented = false
+                            return shouldBePresented
                         }
                     })
+                }.onRowValidationChanged { cell, row in
+                    if let rowIndex = row.indexPath?.row {
+                    while row.section!.count > rowIndex + 1 && row.section?[rowIndex  + 1] is LabelRow {
+                        row.section?.remove(at: rowIndex + 1)
+                    }
+                    if !row.isValid {
+                        let labelRow = LabelRow() {
+                            $0.title = "Claim cannot be empty"
+                            $0.cell.height = { 30 }
+                        }
+                        row.section?.insert(labelRow, at: row.indexPath!.row + 1)
+                    }
+                    }
                 }
+
                 <<< CheckRow() {
                     $0.hidden = Condition.function(["sliderRowTag"], { form in
                         let sliderRowValue = (form.rowBy(tag: "sliderRowTag") as? SliderRowInt)?.value
@@ -100,7 +134,7 @@ class AddClaimsViewController: FormViewController {
                     $0.value = true
                 }
             
-                <<< TextAreaRow() {
+                <<< TextAreaRow("Third Claim") {
                     $0.placeholder = "Third Claim"
                     $0.textAreaHeight = .dynamic(initialTextViewHeight: 40)
                     $0.hidden = Condition.function(["sliderRowTag"], { form in
@@ -125,7 +159,7 @@ class AddClaimsViewController: FormViewController {
                     $0.value = true
                 }
         
-                <<< TextAreaRow() {
+                <<< TextAreaRow("Fourth Claim") {
                     $0.placeholder = "Fourth Claim"
                     $0.textAreaHeight = .dynamic(initialTextViewHeight: 40)
                     $0.hidden = Condition.function(["sliderRowTag"], { form in
@@ -150,7 +184,7 @@ class AddClaimsViewController: FormViewController {
                     $0.value = true
                 }
         
-                <<< TextAreaRow() {
+                <<< TextAreaRow("Fifth Claim") {
                     $0.placeholder = "Fifth Claim"
                     $0.textAreaHeight = .dynamic(initialTextViewHeight: 40)
                     $0.hidden = Condition.function(["sliderRowTag"], { form in
@@ -174,16 +208,20 @@ class AddClaimsViewController: FormViewController {
                     $0.title = "True"
                     $0.value = true
                 }
+            
+            //Submit button section
             +++ Section()
-                <<< ButtonRow() {
+                <<< ButtonRow("Submit Button") {
                     $0.title = "Submit"
-                }
+                    }.onCellSelection { [weak self] (cell, row) in
+                        self?.pushClaims()
+                        row.section?.form?.validate()
+                    }
     }
     
     var successfulClaims: Int = 0
     var successMessage = ""
     var titleMessage = ""
-    
     
     //Calls this function when the tap is recognized.
     func dismissKeyboard() {
@@ -197,6 +235,9 @@ class AddClaimsViewController: FormViewController {
         return true
     }
     
+    func pushClaims() {
+        print("Claims pushed!")
+    }
     //Clear function
     func clear() {
         
