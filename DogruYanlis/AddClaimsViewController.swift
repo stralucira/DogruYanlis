@@ -9,14 +9,14 @@
 import UIKit
 import Eureka
 
-protocol DataEnteredDelegate: class {
-    
-    func userDidEnterInformation(_ claim: Claim)
-
-}
+//protocol DataEnteredDelegate: class {
+//    
+//    func userDidEnterInformation(_ claim: Claim)
+//
+//}
 
 @IBDesignable
-class AddClaimsViewController: UIViewController {
+class AddClaimsViewController: FormViewController {
 
     //var addClaimsGroup = dispatch_group_create()
     
@@ -26,49 +26,34 @@ class AddClaimsViewController: UIViewController {
     let _redColor = UIColor( red: 156/255, green: 0/255, blue: 0/255, alpha: 1.0 )
     let redColor = UIColor( red: 156/255, green: 0/255, blue: 0/255, alpha: 1.0 ).cgColor
     
-    let mySwitch = SevenSwitch(frame: CGRect.zero)
-    let mySwitch2 = SevenSwitch(frame: CGRect.zero)
-    let mySwitch3 = SevenSwitch(frame: CGRect.zero)
-    
     var userName: String = ""
     
     override func viewDidLoad() {
         
         super.viewDidLoad()
-    
-        mySwitch.frame = CGRect(x: 290, y: 150, width: 80, height: 33)
-        mySwitch2.frame = CGRect(x: 290, y: 201, width: 80, height: 33)
-        mySwitch3.frame = CGRect(x: 290, y: 252, width: 80, height: 33)
-        switchHandler(mySwitch)
-        switchHandler(mySwitch2)
-        switchHandler(mySwitch3)
-        mySwitch.addTarget(self, action: #selector(AddClaimsViewController.switchOne(_:)), for: UIControlEvents.valueChanged)
-        mySwitch2.addTarget(self, action: #selector(AddClaimsViewController.switchTwo(_:)), for: UIControlEvents.valueChanged)
-        mySwitch3.addTarget(self, action: #selector(AddClaimsViewController.switchThree(_:)), for: UIControlEvents.valueChanged)
 
-        self.view.addSubview(mySwitch)
-        self.view.addSubview(mySwitch2)
-        self.view.addSubview(mySwitch3)
-        
         //Looks for single or multiple taps.
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(AddClaimsViewController.dismissKeyboard))
         view.addGestureRecognizer(tap)
         
-        sentenceOne.layer.cornerRadius = 10.0
-        sentenceOne.layer.masksToBounds = true
-        sentenceOne.layer.borderColor = greenColor
-        sentenceOne.layer.borderWidth = 2
+        navigationController?.navigationBar.barTintColor = _greenColor
+        navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
+        navigationController?.navigationBar.tintColor = .white
         
-        sentenceTwo.layer.cornerRadius = 10.0
-        sentenceTwo.layer.masksToBounds = true
-        sentenceTwo.layer.borderColor = greenColor
-        sentenceTwo.layer.borderWidth = 2
-        
-        sentenceThree.layer.cornerRadius = 10.0
-        sentenceThree.layer.masksToBounds = true
-        sentenceThree.layer.borderColor = greenColor
-        sentenceThree.layer.borderWidth = 2
-        
+        form
+            +++ Section(){ section in
+                let header = HeaderFooterView<AddClaimsLogoView>(.class)
+                section.header = header
+                section.header!.height = {260}
+            }
+            +++ Section()
+                <<< SliderRowInt() {
+                    $0.title = "How many claims do you want to make?"
+                    $0.minimumValue = 1
+                    $0.maximumValue = 5
+                    $0.steps = 4
+                    $0.value = 5
+                }
     }
     
     var successfulClaims: Int = 0
@@ -82,132 +67,44 @@ class AddClaimsViewController: UIViewController {
         view.endEditing(true)
     }
     
-    weak var delegate: DataEnteredDelegate? = nil
+    //weak var delegate: DataEnteredDelegate? = nil
     
-    @IBOutlet weak var sentenceOne: UITextField!
-    
-    func switchOne(_ sender: SevenSwitch) {
-        if ( sender.isOn() == false ) {
-            sentenceOne.layer.borderColor = redColor
-        } else {
-            sentenceOne.layer.borderColor = greenColor
-        }
-    }
-    
-    @IBOutlet weak var sentenceTwo: UITextField!
-    
-    @IBAction func switchTwo(_ sender: SevenSwitch) {
-        
-        if ( sender.isOn() == false ) {
-            sentenceTwo.layer.borderColor = redColor
-        } else {
-            sentenceTwo.layer.borderColor = greenColor
-        }
-    }
-    @IBOutlet weak var sentenceThree: UITextField!
-    
-    @IBAction func switchThree(_ sender: SevenSwitch) {
-        
-        if ( sender.isOn() == false ) {
-            sentenceThree.layer.borderColor = redColor
-        } else {
-            sentenceThree.layer.borderColor = greenColor
-        }
-        
-    }
     
     @IBAction func save(_ sender: UIButton) {
-        if textFieldsValid() {
-            if ((sentenceOne.text !=  "") || (sentenceTwo.text !=  "") || (sentenceThree.text !=  "")){
-            
-                if (sentenceOne.text != "") {
-                    delegate?.userDidEnterInformation(Claim(name: userName, sentence: sentenceOne.text!, truthfulness: mySwitch.isOn()))
-                    successfulClaims += 1
-                }
         
-                if (sentenceTwo.text != "") {
-                    delegate?.userDidEnterInformation(Claim(name: userName, sentence: sentenceTwo.text!, truthfulness: mySwitch2.isOn()))
-                    successfulClaims += 1
-                }
-        
-                if (sentenceThree.text != "") {
-                    delegate?.userDidEnterInformation(Claim(name: userName, sentence: sentenceThree.text!, truthfulness: mySwitch3.isOn()))
-                    successfulClaims += 1
-                }
-            
-                if (successfulClaims == 1) {
-                    successMessage = "Your 1 claim has been submitted."
-                    titleMessage = "Gratz \(userName)!"
-                
-                } else {
-                    successMessage = "Your \(successfulClaims) claims has been submitted."
-                    titleMessage = "Gratz \(userName)!"
-                }
-                
-                let successAlertController = UIAlertController(
-                    title: titleMessage,
-                    message: successMessage,
-                    preferredStyle: UIAlertControllerStyle.alert
-                )
-                successAlertController.addAction(
-                    UIAlertAction(
-                        title: "Okay",
-                        style: UIAlertActionStyle.default,
-                        handler: { (successAlertController) in
-                            _ = self.navigationController?.popViewController(animated: true)
-                        }
-                    )
-                )
-                self.present(successAlertController, animated: true, completion: nil)
-                clear()
-            }
-        }
     }
     
     func textFieldsValid() -> Bool {
-        if (((sentenceOne.text == "") && (sentenceTwo.text == "")) && (sentenceThree.text == "")) {
-            
-            let claimNotEnteredAlertController = UIAlertController(title: "", message:
-                "You have not entered any claims!", preferredStyle: UIAlertControllerStyle.alert)
-            claimNotEnteredAlertController.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.default,handler: nil))
-            
-            self.present(claimNotEnteredAlertController, animated: true, completion: nil)
-            return false
-        } else {
-            return true
-        }
-    }
-
-    
-    func switchHandler(_ mySwitch: SevenSwitch) -> Void {
-        mySwitch.offLabel.text = "FALSE"
-        mySwitch.offLabel.textColor = UIColor.white
-        mySwitch.onLabel.textColor = UIColor.white
-        mySwitch.inactiveColor =  _redColor
-        mySwitch.activeColor = _greenColor
-        mySwitch.tintColor = UIColor.clear
-        mySwitch.thumbImage = UIImage(named: "iconsnake")
-        mySwitch.on = true
-        mySwitch.onLabel.text = "TRUE"
+        return true
     }
     
     //Clear function
     func clear() {
         
-        sentenceOne.text = nil
-        sentenceTwo.text = nil
-        sentenceThree.text = nil
-        
-        mySwitch.on = true
-        mySwitch2.on = true
-        mySwitch3.on = true
-        
-        sentenceOne.layer.borderColor = greenColor
-        sentenceTwo.layer.borderColor = greenColor
-        sentenceThree.layer.borderColor = greenColor
-        
-        successfulClaims = 0
-        
     }
     
 }
+
+class AddClaimsLogoView: UIView {
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        let imageView = UIImageView(image: UIImage(named: "addYourClaims"))
+        imageView.frame = CGRect(x: 0, y: 100, width: 500, height: 130)
+        imageView.autoresizingMask = .flexibleWidth
+        self.frame = CGRect(x: 0, y: 100, width: 500, height: 100)
+        imageView.contentMode = .scaleAspectFill
+        let label = UILabel(frame: CGRect(x:0, y:50, width:500, height: 20))
+        label.text = "Make Your Claims"
+        label.font = UIFont(name: "Helvetica-Bold", size: 25)
+        label.textColor = UIColor.white
+        label.center = CGPoint(x: 340,y: 65)
+        imageView.addSubview(label)
+        self.addSubview(imageView)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+

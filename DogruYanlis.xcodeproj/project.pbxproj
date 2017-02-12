@@ -20,6 +20,7 @@
 		7C846DD21D458C5000A05DA3 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C846DD11D458C5000A05DA3 /* GameViewController.swift */; };
 		7C8E11E41E38E8F600708A16 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8E11E31E38E8F600708A16 /* SignInViewController.swift */; };
 		7CC8735F1D4AF47600E4EAFB /* sarilip.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 7CC8735E1D4AF47600E4EAFB /* sarilip.m4a */; };
+		7CD3F88D1E4FD8A700F238BF /* SliderRowInt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CD3F88C1E4FD8A700F238BF /* SliderRowInt.swift */; };
 		7CDDE1AB1E4D33500011DF9D /* NSMutableAttributedString+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDDE1AA1E4D33500011DF9D /* NSMutableAttributedString+Additions.swift */; };
 /* End PBXBuildFile section */
 
@@ -38,6 +39,7 @@
 		7C846DD11D458C5000A05DA3 /* GameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 		7C8E11E31E38E8F600708A16 /* SignInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		7CC8735E1D4AF47600E4EAFB /* sarilip.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; name = sarilip.m4a; path = ../sarilip.m4a; sourceTree = "<group>"; };
+		7CD3F88C1E4FD8A700F238BF /* SliderRowInt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SliderRowInt.swift; sourceTree = "<group>"; };
 		7CDDE1AA1E4D33500011DF9D /* NSMutableAttributedString+Additions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSMutableAttributedString+Additions.swift"; sourceTree = "<group>"; };
 		B4E1449083EA25DC1E34BDDD /* Pods-DogruYanlis.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DogruYanlis.release.xcconfig"; path = "Pods/Target Support Files/Pods-DogruYanlis/Pods-DogruYanlis.release.xcconfig"; sourceTree = "<group>"; };
 		B5AD267B1F38E9D67BF157F9 /* Pods-DogruYanlis.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DogruYanlis.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DogruYanlis/Pods-DogruYanlis.debug.xcconfig"; sourceTree = "<group>"; };
@@ -76,6 +78,7 @@
 				7C6341471D44EE8400137383 /* LaunchScreen.storyboard */,
 				7C63414A1D44EE8400137383 /* Info.plist */,
 				7CDDE1AA1E4D33500011DF9D /* NSMutableAttributedString+Additions.swift */,
+				7CD3F88C1E4FD8A700F238BF /* SliderRowInt.swift */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -249,6 +252,7 @@
 				7CDDE1AB1E4D33500011DF9D /* NSMutableAttributedString+Additions.swift in Sources */,
 				7C8E11E41E38E8F600708A16 /* SignInViewController.swift in Sources */,
 				7C846DD21D458C5000A05DA3 /* GameViewController.swift in Sources */,
+				7CD3F88D1E4FD8A700F238BF /* SliderRowInt.swift in Sources */,
 				7C19F46B1D82DE05002D19D5 /* SevenSwitch.swift in Sources */,
 				7C63413F1D44EE8400137383 /* AppDelegate.swift in Sources */,
 				7C6341531D44FA2F00137383 /* GameData.swift in Sources */,

@@ -27,8 +27,6 @@ import QuartzCore
 
 @IBDesignable @objc open class SevenSwitch: UIControl {
     
-    // The publicity of these wagons are under the hood operations. That cannot be septicised.
-    
     /*
      *   Set (without animation) whether the switch is on or off
      */

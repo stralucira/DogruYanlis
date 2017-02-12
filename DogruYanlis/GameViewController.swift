@@ -34,9 +34,11 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
   }
 }
 
+struct SYColorPalette {
+    let greenColor = UIColor( red: 18/255, green: 136/255, blue: 2/255, alpha: 1.0 )
+}
 
-
-class GameViewController: UIViewController, DataEnteredDelegate, ScoreboardDelegate {
+class GameViewController: UIViewController, ScoreboardDelegate {
 
     var data = GameData()
     
@@ -52,6 +54,20 @@ class GameViewController: UIViewController, DataEnteredDelegate, ScoreboardDeleg
     
     var audioPlayer = AVAudioPlayer()
     
+    var gameName: String? {
+        didSet {
+            gameNameLabel.text = gameName
+        }
+    }
+    
+    var userCount: Int = 0 {
+        didSet {
+            gameNameLabel.text = gameName! + " (\(userCount) Players)"
+        }
+    }
+    
+    let _greenColor = UIColor( red: 18/255, green: 136/255, blue: 2/255, alpha: 1.0 )
+    
     override func viewDidLoad() {
         
         super.viewDidLoad()
@@ -60,9 +76,12 @@ class GameViewController: UIViewController, DataEnteredDelegate, ScoreboardDeleg
         audioPlayer.prepareToPlay()
         anilButton.isEnabled = false
         
+        navigationController?.navigationBar.barTintColor = _greenColor
+        
         usersRef = ref.child("sessions/\(data.gameID)/users")
         
-        gameNameLabel.text = " " + data.gameID
+        gameName = data.gameID
+        gameNameLabel.sizeToFit()
         
         if data.isAdmin() {
             userNameLabel.text = data.userName + " (Admin)"
@@ -86,7 +105,7 @@ class GameViewController: UIViewController, DataEnteredDelegate, ScoreboardDeleg
         userCountListenerHandle = ref.child("sessions/\(data.gameID)/metadata/user count").observe(.value, with: {
             (snapshot: FIRDataSnapshot) in
             if let count = snapshot.value as? Int {
-                self.sessionInfo.text = "\(count) Users in game"
+                self.userCount = count
             }
         })
         
@@ -157,7 +176,6 @@ class GameViewController: UIViewController, DataEnteredDelegate, ScoreboardDeleg
         if segue.identifier == "makeYourClaims" {
             let secondViewController = segue.destination as! AddClaimsViewController
             secondViewController.userName = self.data.userName
-            secondViewController.delegate = self
         } else if segue.identifier == "showScoreboard" {
             let second = segue.destination as! ScoreboardViewController
             second.delegate = self
@@ -189,10 +207,9 @@ class GameViewController: UIViewController, DataEnteredDelegate, ScoreboardDeleg
         ]
         self.ref.updateChildValues(claimUpdate)
         
-        let claimsRef = ref.child("sessions/\(self.data.gameID)/claims")
         let claimCountRef = ref.child("sessions/\(self.data.gameID)/metadata/claim count")
         
-        claimsRef.observeSingleEvent(of: .value, with: {
+        claimCountRef.observeSingleEvent(of: .value, with: {
             (snapshot) in
             index = snapshot.value! as! Int
             
