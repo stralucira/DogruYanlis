@@ -123,7 +123,8 @@ class GameViewController: UIViewController, ScoreboardDelegate {
         navigationController?.navigationBar.shadowImage = nil
         navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
         navigationController?.navigationBar.barTintColor = _greenColor
-        navigationController?.title = "Sarılıp Yılana"
+        navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
+        self.title = "Sarılıp Yılana"
     }
     
     override func viewWillDisappear(_ animated: Bool) {
