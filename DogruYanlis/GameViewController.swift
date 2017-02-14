@@ -117,8 +117,13 @@ class GameViewController: UIViewController, ScoreboardDelegate {
             // Maybe call a .Value first, then .ChildAdded inside this block?
             // Could make .ChildAdded trigger only once!
             // Test on multiple devices.
-    
         })
+        
+        navigationController?.navigationBar.isTranslucent = false
+        navigationController?.navigationBar.shadowImage = nil
+        navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
+        navigationController?.navigationBar.barTintColor = _greenColor
+        navigationController?.title = "Sarılıp Yılana"
     }
     
     override func viewWillDisappear(_ animated: Bool) {

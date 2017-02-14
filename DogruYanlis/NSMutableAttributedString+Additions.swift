@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 
+
 extension NSMutableAttributedString {
     func bold(_ text:String) -> NSMutableAttributedString {
         let attrs:[String:AnyObject] = [NSFontAttributeName : UIFont(name: "AvenirNext-Medium", size: 14)!]
